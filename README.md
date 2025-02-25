@@ -4,13 +4,13 @@
 
 ### 🏗 Arquitectura
 - **Tipo de Aplicación:** Monolítica con Spring Boot.
-- **Módulos:** Clientes, Productos y Carrito de Compras.
+- **Módulos:** Clientes, Productos y Carrito de Compras como 3 microservicios independientes desarrollados con REST-API.
 - **Seguridad:** Implementación con Spring Security y JWT.
-- **Base de Datos:** PostgreSQL.
+- **Base de Datos:** PostgreSQL dockerizada.
 - **Despliegue:** Docker y Docker Compose.
 
 ### 🛠 Tecnologías Utilizadas
-- **Lenguaje:** Java 17.
+- **Lenguaje:** Java 21.
 - **Framework:** Spring Boot 3.x.
 - **Persistencia:** Spring Data JPA con Hibernate.
 - **Autenticación y Autorización:** Spring Security con JWT.
