@@ -4,7 +4,7 @@
 
 ### 🏗 Arquitectura
 - **Tipo de Aplicación:** Monolítica con Spring Boot.
-- **Módulos:** Clientes, Productos y Carrito de Compras como 3 microservicios independientes desarrollados con REST-API.
+- **Módulos:** Clientes, Productos y Carrito de Compras como 3 microservicios independientes desarrollados con REST-API comunicados por HttpClient.
 - **Seguridad:** Implementación con Spring Security y JWT.
 - **Base de Datos:** PostgreSQL dockerizada.
 - **Despliegue:** Docker y Docker Compose.
