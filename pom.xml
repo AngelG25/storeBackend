@@ -14,15 +14,15 @@
     </parent>
 
     <groupId>com.portfolio</groupId>
-    <artifactId>ProjectParent</artifactId>
+    <artifactId>StoreBackend</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Archetype - ProjectParent</name>
+    <name>Archetype - StoreBackend</name>
     <url>http://maven.apache.org</url>
 
     <modules>
-
+        <module>productsRA</module>
     </modules>
 
     <dependencies>
