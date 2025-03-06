@@ -33,9 +33,17 @@ public class Product {
   @NotNull
   String description;
 
+  @JsonProperty("quantity")
+  @NotNull
+  double quantity;
+
   @JsonProperty("price")
   @NotNull
   double price;
+
+  @JsonProperty("isInStock")
+  @NotNull
+  boolean isInStock;
 
   @JsonProperty("creationDate")
   @EqualsAndHashCode.Exclude

@@ -36,8 +36,14 @@ public class ProductDao {
   @Column(name = "description")
   private String description;
 
+  @Column(name = "quantity")
+  private double quantity;
+
   @Column(name = "price")
   private double price;
+
+  @Column(name = "isInStock")
+  private boolean isInStock;
 
   @Temporal(TemporalType.TIMESTAMP)
   @CreationTimestamp
