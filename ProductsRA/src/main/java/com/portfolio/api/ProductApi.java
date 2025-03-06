@@ -49,4 +49,10 @@ public interface ProductApi {
    */
   void restockProduct(UUID id, double quantity);
 
+  /**
+   * Delete product with the id indicated
+   * @param id of the product that will be deleted
+   */
+  void deleteProduct(UUID id);
+
 }
