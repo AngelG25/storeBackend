@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
@@ -37,10 +38,12 @@ public class Product {
   double price;
 
   @JsonProperty("creationDate")
+  @EqualsAndHashCode.Exclude
   @NotNull
   Instant creationDate;
 
   @JsonProperty("updateDate")
+  @EqualsAndHashCode.Exclude
   @NotNull
   Instant updateDate;
 }
