@@ -21,7 +21,7 @@ public class Product {
   @NotNull
   UUID idProduct;
 
-  @JsonProperty(value = "code", access = JsonProperty.Access.READ_ONLY)
+  @JsonProperty(value = "code")
   @NotNull
   String code;
 
