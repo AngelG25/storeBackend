@@ -28,6 +28,7 @@ public class ProductSrv implements ProductApi {
 
   private static final String PRODUCT_WITH_ID = "Product with id: ";
   private static final String NOT_FOUND = " not found";
+  private static final String ERROR_SAVING = "Error while saving the product: ";
 
   @Override
   public List<Product> findProducts() {
@@ -54,7 +55,7 @@ public class ProductSrv implements ProductApi {
       }
       productRepository.save(productMapper.productToDao(product));
     } catch (PersistenceException e) {
-      throw new PersistException("Error while saving the product: " + e.getMessage());
+      throw new PersistException(ERROR_SAVING + e.getMessage());
     }
   }
 
@@ -66,30 +67,39 @@ public class ProductSrv implements ProductApi {
           .map(productDao -> productRepository.save(updatedProduct))
           .orElseThrow(() -> new ProductNotFoundException(PRODUCT_WITH_ID + product.getIdProduct() + NOT_FOUND));
     } catch (PersistenceException e) {
-      throw new PersistException("Error while saving the product: " + e.getMessage());
+      throw new PersistException(ERROR_SAVING + e.getMessage());
     }
   }
 
   @Override
   public void outStockProduct(UUID id) {
-    productRepository.findById(id)
-        .map(productDao -> {
-          productDao.setInStock(false);
-          productDao.setQuantity(0.0);
-          return productRepository.save(productDao);
-        })
-        .orElseThrow(() -> new ProductNotFoundException(PRODUCT_WITH_ID + id + NOT_FOUND));
+    try {
+      productRepository.findById(id)
+          .map(productDao -> {
+            productDao.setInStock(false);
+            productDao.setQuantity(0.0);
+            return productRepository.save(productDao);
+          })
+          .orElseThrow(() -> new ProductNotFoundException(PRODUCT_WITH_ID + id + NOT_FOUND));
+    } catch (PersistenceException e) {
+      throw new PersistException(ERROR_SAVING + e.getMessage());
+    }
+
   }
 
   @Override
   public void restockProduct(UUID id, double quantity) {
-    productRepository.findById(id)
-        .map(productDao -> {
-          productDao.setQuantity(productDao.getQuantity() + quantity);
-          productDao.setInStock(true);
-          return productRepository.save(productDao);
-        })
-        .orElseThrow(() -> new ProductNotFoundException(PRODUCT_WITH_ID + id + NOT_FOUND));
+    try {
+      productRepository.findById(id)
+          .map(productDao -> {
+            productDao.setQuantity(productDao.getQuantity() + quantity);
+            productDao.setInStock(true);
+            return productRepository.save(productDao);
+          })
+          .orElseThrow(() -> new ProductNotFoundException(PRODUCT_WITH_ID + id + NOT_FOUND));
+    } catch (PersistenceException e) {
+      throw new PersistException(ERROR_SAVING + e.getMessage());
+    }
   }
 
   @Override
