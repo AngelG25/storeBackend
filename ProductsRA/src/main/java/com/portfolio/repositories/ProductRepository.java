@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface ProductRepository extends JpaRepository<ProductDao, UUID> {
 
+  boolean existsByCode(String code);
+
 }

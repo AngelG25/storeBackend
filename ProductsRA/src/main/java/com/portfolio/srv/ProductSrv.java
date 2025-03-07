@@ -1,6 +1,7 @@
 package com.portfolio.srv;
 
 import com.portfolio.api.ProductApi;
+import com.portfolio.api.exceptions.ExistingProductException;
 import com.portfolio.api.exceptions.PersistException;
 import com.portfolio.api.exceptions.ProductNotFoundException;
 import com.portfolio.api.models.Product;
@@ -48,6 +49,9 @@ public class ProductSrv implements ProductApi {
   @Override
   public void createProduct(Product product) {
     try {
+      if (productRepository.existsByCode(product.getCode())) {
+        throw new ExistingProductException("The product with id: " + product.getCode() + " already exists");
+      }
       productRepository.save(productMapper.productToDao(product));
     } catch (PersistenceException e) {
       throw new PersistException("Error while saving the product: " + e.getMessage());
