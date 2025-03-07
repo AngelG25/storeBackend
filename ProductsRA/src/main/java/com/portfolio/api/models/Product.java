@@ -17,7 +17,7 @@ import java.util.UUID;
 @Jacksonized
 public class Product {
 
-  @JsonProperty(value = "idProduct", access = JsonProperty.Access.READ_ONLY)
+  @JsonProperty(value = "idProduct")
   @NotNull
   UUID idProduct;
 

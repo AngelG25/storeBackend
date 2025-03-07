@@ -47,7 +47,7 @@ public class ProductDao {
 
   @Temporal(TemporalType.TIMESTAMP)
   @CreationTimestamp
-  @Column(name = "creationDate")
+  @Column(name = "creationDate", updatable = false)
   private Instant creationDate;
 
   @Temporal(TemporalType.TIMESTAMP)
