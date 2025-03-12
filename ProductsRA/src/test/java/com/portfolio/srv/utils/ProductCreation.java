@@ -5,7 +5,7 @@ import com.portfolio.dao.ProductDao;
 
 public class ProductCreation {
 
-  public Product createProduct() {
+  public static Product createProduct() {
     return Product.builder()
         .name("milk")
         .price(3.4)
@@ -15,7 +15,7 @@ public class ProductCreation {
         .build();
   }
 
-  public ProductDao createProductDao() {
+  public static ProductDao createProductDao() {
     ProductDao productDao = new ProductDao();
     productDao.setQuantity(4);
     productDao.setInStock(true);
