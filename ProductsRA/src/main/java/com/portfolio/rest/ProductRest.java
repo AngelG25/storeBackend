@@ -10,6 +10,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.annotation.ApplicationScope;
 
@@ -59,6 +61,7 @@ public class ProductRest {
   }
 
   @PostMapping("/")
+  @ResponseStatus(HttpStatus.CREATED)
   @Operation(summary = "Create a product",
       description = "Create the product with the specified attributes in the database")
   @ApiResponses(value = {
@@ -72,6 +75,7 @@ public class ProductRest {
   }
 
   @PutMapping("/")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = "Updates a product",
       description = "Updates the product with the specified attributes in the database")
   @ApiResponses(value = {
@@ -84,6 +88,8 @@ public class ProductRest {
     productApi.updateProduct(product);
   }
 
+  @PatchMapping("/{idProduct}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = "Marks a product with no stock",
       description = "Marks a product with no stock and quantity 0")
   @ApiResponses(value = {
@@ -91,11 +97,12 @@ public class ProductRest {
       @ApiResponse(responseCode = "404", description = "Product not found"),
       @ApiResponse(responseCode = "500", description = "Internal server error")
   })
-  @PatchMapping("/{idProduct}")
   public void outStockProduct(@PathVariable UUID idProduct) {
     productApi.outStockProduct(idProduct);
   }
 
+  @PatchMapping("/{idProduct}/{quantity}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = "Restock a product",
       description = "Marks a product with stock and the specified quantity")
   @ApiResponses(value = {
@@ -103,11 +110,12 @@ public class ProductRest {
       @ApiResponse(responseCode = "404", description = "Product not found"),
       @ApiResponse(responseCode = "500", description = "Internal server error")
   })
-  @PatchMapping("/{idProduct}/{quantity}")
   public void restockProduct(@PathVariable UUID idProduct, @PathVariable double quantity) {
     productApi.restockProduct(idProduct, quantity);
   }
 
+  @DeleteMapping("/{idProduct}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = "Removes a product",
       description = "Removes a product from the database")
   @ApiResponses(value = {
@@ -115,7 +123,6 @@ public class ProductRest {
       @ApiResponse(responseCode = "404", description = "Product not found"),
       @ApiResponse(responseCode = "500", description = "Internal server error")
   })
-  @DeleteMapping("/{idProduct}")
   public void deleteProduct(@PathVariable UUID idProduct) {
     productApi.deleteProduct(idProduct);
   }
