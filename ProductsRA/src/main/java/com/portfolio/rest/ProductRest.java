@@ -126,4 +126,9 @@ public class ProductRest {
   public void deleteProduct(@PathVariable UUID idProduct) {
     productApi.deleteProduct(idProduct);
   }
+
+  @GetMapping("/isValidProduct/{idProduct}")
+  public boolean isValidProduct(@PathVariable UUID idProduct) {
+    return productApi.isEligibleProduct(idProduct);
+  }
 }

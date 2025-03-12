@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
 
+  @Mapping(target = "cartDao", ignore = true)
   ProductDao productToDao(Product product);
 
   @Mapping(source = "inStock", target = "isInStock")
