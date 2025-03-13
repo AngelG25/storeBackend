@@ -110,4 +110,13 @@ public class ProductSrv implements ProductApi {
       throw new PersistException(PRODUCT_WITH_ID + id + " could not be deleted");
     }
   }
+
+  @Override
+  public Product getProductInStock(UUID id) {
+    return productRepository.findById(id)
+        .filter(ProductDao::isInStock)
+        .map(productMapper::productToDto)
+        .orElseThrow(() -> new ProductNotFoundException("Product not found or without stock: " + id));
+  }
+
 }

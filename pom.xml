@@ -22,6 +22,7 @@
     <url>http://maven.apache.org</url>
 
     <modules>
+        <module>cartsRA</module>
         <module>productsRA</module>
     </modules>
 
