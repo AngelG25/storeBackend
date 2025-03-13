@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -36,7 +35,6 @@ public class CartDao {
   private UUID idClient;
 
   @OneToMany(mappedBy = "cartDao", cascade = CascadeType.ALL)
-  @JoinColumn(name = "products")
   private List<ProductDao> products;
 
   @Temporal(TemporalType.TIMESTAMP)
