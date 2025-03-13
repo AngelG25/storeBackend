@@ -1,11 +1,13 @@
 package com.portfolio.srv.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.portfolio.api.exceptions.MicroserviceCommunicationException;
+import com.portfolio.api.exceptions.ProductNotFoundException;
 import com.portfolio.api.models.Product;
-import com.portfolio.dao.ProductDao;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mapping.MappingException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,22 +21,34 @@ public class HttpUtils {
   private static final HttpClient httpClient = HttpClient.newHttpClient();
   private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-  public static Product getProductById(String productId) throws IOException, InterruptedException {
+  public static Product getProductById(String productId) throws MappingException {
 
     String url = "http://localhost:8080/api/v1/products/isValidProduct/" + productId;
 
-    HttpRequest request = HttpRequest.newBuilder()
+    HttpResponse<String> response = sendProductRequest(url);
+
+    if (response.statusCode() == 200) {
+      try {
+        return objectMapper.readValue(response.body(), Product.class);
+      } catch (JsonProcessingException e) {
+        throw new MappingException("Error while mapping the response from product microservice: " + e.getMessage());
+      }
+    } else {
+      throw new ProductNotFoundException("Product with id: " + productId + " couldn't be found, ERROR: " + response.statusCode());
+    }
+
+  }
+
+  private static HttpResponse<String> sendProductRequest(final String url) {
+    final HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(url))
         .GET()
         .header("Accept", "application/json")
         .build();
-
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-    if (response.statusCode() == 200) {
-      return objectMapper.readValue(response.body(), Product.class);
-    } else {
-      throw new RuntimeException("Error al obtener el producto: " + response.statusCode());
+    try {
+      return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (IOException | InterruptedException e) {
+      throw new MicroserviceCommunicationException("Error communicating with Product microservice");
     }
 
   }

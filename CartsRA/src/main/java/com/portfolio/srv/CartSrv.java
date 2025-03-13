@@ -1,6 +1,8 @@
 package com.portfolio.srv;
 
 import com.portfolio.api.CartApi;
+import com.portfolio.api.exceptions.MicroserviceCommunicationException;
+import com.portfolio.api.exceptions.ProductNotFoundException;
 import com.portfolio.api.models.Cart;
 import com.portfolio.api.models.Product;
 import com.portfolio.dao.CartDao;
@@ -9,11 +11,11 @@ import com.portfolio.srv.utils.CartMapper;
 import com.portfolio.srv.utils.HttpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.mapping.MappingException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.annotation.ApplicationScope;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,14 +55,12 @@ public class CartSrv implements CartApi {
   }
 
   @Override
-  public void addProductToCart(UUID productId, UUID clientId) throws IOException, InterruptedException {
-    try {
-      Product product = HttpUtils.getProductById(productId.toString());
-      log.info(product);
+  public void addProductToCart(UUID productId, UUID clientId)
+      throws ProductNotFoundException, MicroserviceCommunicationException, MappingException {
+    Product product = HttpUtils.getProductById(productId.toString());
+    log.info(product);
 
-    } catch (IOException | InterruptedException e) {
-      throw new RuntimeException("Error al comunicarse con el microservicio de productos", e);
-    }
+
   }
 
   @Override
