@@ -1,6 +1,7 @@
 package com.portfolio.srv;
 
 import com.portfolio.api.CartApi;
+import com.portfolio.api.exceptions.CartNotFoundException;
 import com.portfolio.api.exceptions.MicroserviceCommunicationException;
 import com.portfolio.api.exceptions.ProductNotFoundException;
 import com.portfolio.api.models.Cart;
@@ -37,8 +38,10 @@ public class CartSrv implements CartApi {
   }
 
   @Override
-  public Cart getCartByClientId(UUID clientId) {
-    return cartRepository.getCartByIdClient(clientId);
+  public Cart getCartByClientId(UUID idClient) {
+    return cartRepository.findByIdClient(idClient)
+        .map(cartMapper::toCart)
+        .orElseThrow(() -> new CartNotFoundException(idClient.toString()));
   }
 
   @Override
@@ -50,21 +53,42 @@ public class CartSrv implements CartApi {
   }
 
   @Override
-  public double getOverallPrice(UUID clientId) {
-    return 0;
+  public double getOverallPrice(UUID idClient) {
+    Cart cart = findCartByClientId(idClient);
+    return cart.getProducts()
+        .stream()
+        .mapToDouble(Product::getPrice)
+        .sum();
   }
 
   @Override
-  public void addProductToCart(UUID productId, UUID clientId)
+  public void addProductToCart(UUID idProduct, UUID idClient)
       throws ProductNotFoundException, MicroserviceCommunicationException, MappingException {
-    Product product = HttpUtils.getProductById(productId.toString());
-    log.info(product);
-
-
+    final Product product = HttpUtils.getValidProduct(idProduct.toString());
+    Cart cart = addProductToCart(idClient, product);
+    cartRepository.save(cartMapper.toCartDao(cart));
   }
 
   @Override
   public void removeProductFromCart(UUID productId, UUID clientId) {
+    final Product product = HttpUtils.getProduct(productId.toString());
+    Cart cart = findCartByClientId(clientId);
+    cart.getProducts().remove(product);
+  }
 
+  private Cart findCartByClientId(UUID clientId) {
+    return cartRepository.findByIdClient(clientId)
+        .map(cartMapper::toCart)
+        .orElseThrow(() -> new CartNotFoundException("Cart with client id " + clientId.toString() + " not found"));
+  }
+
+  private Cart addProductToCart(final UUID clientId, final Product product) {
+    Cart cart = findCartByClientId(clientId);
+    List<Product> products = cart.getProducts();
+    products.add(product);
+    cart = cart.toBuilder()
+        .products(products)
+        .build();
+    return cart;
   }
 }
