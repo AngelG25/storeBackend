@@ -24,6 +24,7 @@
     <modules>
         <module>cartsRA</module>
         <module>productsRA</module>
+        <module>clientsRA</module>
     </modules>
 
     <dependencies>
