@@ -56,10 +56,10 @@ public interface ProductApi {
   void deleteProduct(UUID id);
 
   /**
-   * Checks if a product can be added to the cart.
+   * Gets the product that can be added to the cart.
    * @param id the id of the product
-   * @return true if the product is in stock and can be added to the cart
+   * @return the product that is in stock and can be added to the cart
    */
-  boolean isEligibleProduct(UUID id);
+  Product getProductInStock(UUID id);
 
 }

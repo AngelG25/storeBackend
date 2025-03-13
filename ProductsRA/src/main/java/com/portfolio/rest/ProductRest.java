@@ -128,7 +128,7 @@ public class ProductRest {
   }
 
   @GetMapping("/isValidProduct/{idProduct}")
-  public boolean isValidProduct(@PathVariable UUID idProduct) {
-    return productApi.isEligibleProduct(idProduct);
+  public Product isValidProduct(@PathVariable UUID idProduct) {
+    return productApi.getProductInStock(idProduct);
   }
 }

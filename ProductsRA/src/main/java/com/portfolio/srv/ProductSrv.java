@@ -112,9 +112,11 @@ public class ProductSrv implements ProductApi {
   }
 
   @Override
-  public boolean isEligibleProduct(UUID id) {
+  public Product getProductInStock(UUID id) {
     return productRepository.findById(id)
-        .map(ProductDao::isInStock)
-        .orElse(false);
+        .filter(ProductDao::isInStock)
+        .map(productMapper::productToDto)
+        .orElseThrow(() -> new ProductNotFoundException("Product not found or without stock: " + id));
   }
+
 }
