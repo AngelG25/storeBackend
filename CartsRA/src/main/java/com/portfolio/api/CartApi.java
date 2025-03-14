@@ -13,7 +13,7 @@ public interface CartApi {
    * @param cart parameters of the cart to be created
    * @return the cart created
    */
-  Cart createCart(Cart cart);
+  UUID createCart(Cart cart);
 
   /**
    * Get the cart of a specific client
