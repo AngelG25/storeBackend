@@ -27,7 +27,7 @@ public class Cart {
   UUID idClient;
 
   @JsonProperty(value = "products")
-  List<Product> products = new ArrayList<>();
+  List<Product> products;
 
   @JsonProperty("updateDate")
   @EqualsAndHashCode.Exclude

@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = CartMapper.class)
 public interface ClientMapper {
 
-  @Mapping(target = "cartDao", source = "cart")
   ClientDao toClientDao(Client client);
 
   Client toClient(ClientDao clientDao);

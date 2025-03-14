@@ -45,9 +45,8 @@ public class Client {
   @NotNull
   String address;
 
-  @JsonProperty(value = "cart")
-  @NotNull
-  Cart cart;
+  @JsonProperty(value = "idCart")
+  UUID idCart;
 
   @JsonProperty("creationDate")
   @EqualsAndHashCode.Exclude

@@ -1,9 +1,13 @@
 package com.portfolio.srv;
 
 import com.portfolio.api.ClientApi;
+import com.portfolio.api.models.Cart;
 import com.portfolio.api.models.Client;
+import com.portfolio.dao.ClientDao;
 import com.portfolio.repositories.ClientRepository;
+import com.portfolio.srv.utils.CartMapper;
 import com.portfolio.srv.utils.ClientMapper;
+import com.portfolio.srv.utils.HttpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -22,10 +26,15 @@ public class ClientSrv implements ClientApi {
 
   private final ClientRepository clientRepository;
   private final ClientMapper clientMapper;
+  private final HttpUtils httpUtils;
+  private final CartMapper cartMapper;
 
   @Override
   public void createClient(Client client) {
-
+    UUID idCart = httpUtils.createCart();
+    ClientDao clientDao = clientMapper.toClientDao(client);
+    clientDao.setIdCart(idCart);
+    clientRepository.save(clientDao);
   }
 
   @Override
@@ -51,5 +60,9 @@ public class ClientSrv implements ClientApi {
   @Override
   public List<Client> getClients() {
     return List.of();
+  }
+
+  private UUID cartCreation() {
+    return httpUtils.createCart();
   }
 }

@@ -50,8 +50,8 @@ public class ClientDao {
   @Column(name = "address")
   private String address;
 
-  @OneToOne(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private CartDao cartDao;
+  @Column(name = "idCart", unique = true)
+  private UUID idCart;
 
   @Temporal(TemporalType.TIMESTAMP)
   @CreationTimestamp
