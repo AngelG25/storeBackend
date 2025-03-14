@@ -18,6 +18,7 @@ import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +38,7 @@ public class CartDao {
   private UUID idClient;
 
   @OneToMany(mappedBy = "cartDao", cascade = CascadeType.ALL)
-  private List<ProductDao> products;
+  private List<ProductDao> products = new ArrayList<>();
 
   @OneToOne
   @JoinColumn(name = "idClient", referencedColumnName = "idClient", unique = true)

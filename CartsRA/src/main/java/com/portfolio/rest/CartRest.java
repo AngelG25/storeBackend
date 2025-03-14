@@ -31,7 +31,7 @@ public class CartRest {
 
   @PostMapping("/")
   @Consumes(MediaType.APPLICATION_JSON)
-  public UUID createCart(@RequestBody Cart cart) {
+  public Cart createCart(@RequestBody Cart cart) {
     return cartApi.createCart(cart);
   }
 

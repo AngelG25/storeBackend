@@ -31,10 +31,10 @@ public class CartSrv implements CartApi {
   private final CartMapper cartMapper;
 
   @Override
-  public UUID createCart(Cart cart) {
+  public Cart createCart(Cart cart) {
     final CartDao cartDao = cartMapper.toCartDao(cart);
     cartRepository.save(cartDao);
-    return cartDao.getIdCart();
+    return cartMapper.toCart(cartDao);
   }
 
   @Override

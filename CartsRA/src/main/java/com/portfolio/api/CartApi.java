@@ -11,9 +11,9 @@ public interface CartApi {
   /**
    * Creates a cart, will be called from client microservice
    * @param cart parameters of the cart to be created
-   * @return the UUID associated to the cart created
+   * @return the cart created
    */
-  UUID createCart(Cart cart);
+  Cart createCart(Cart cart);
 
   /**
    * Get the cart of a specific client
