@@ -52,8 +52,8 @@ public class ClientRest {
   }
 
   @GetMapping("/findById/{idClient}")
-  public Client getClient(@PathVariable UUID idClient) {
-    return clientApi.getClient(idClient);
+  public Client getClientById(@PathVariable UUID idClient) {
+    return clientApi.getClientById(idClient);
   }
 
   @GetMapping("/findByEmail/{email}")

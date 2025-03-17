@@ -30,7 +30,7 @@ public interface ClientApi {
    * @param id of the client to be found
    * @return client with the specified id
    */
-  Client getClient(UUID id);
+  Client getClientById(UUID id);
 
   /**
    * Find a client by the email

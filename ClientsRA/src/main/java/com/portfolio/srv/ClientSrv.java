@@ -1,12 +1,14 @@
 package com.portfolio.srv;
 
 import com.portfolio.api.ClientApi;
+import com.portfolio.api.exceptions.ClientNotFoundException;
+import com.portfolio.api.exceptions.PersistException;
 import com.portfolio.api.models.Client;
 import com.portfolio.dao.ClientDao;
 import com.portfolio.repositories.ClientRepository;
-import com.portfolio.srv.utils.CartMapper;
 import com.portfolio.srv.utils.ClientMapper;
 import com.portfolio.srv.utils.HttpUtils;
+import jakarta.persistence.PersistenceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,6 @@ public class ClientSrv implements ClientApi {
   private final ClientRepository clientRepository;
   private final ClientMapper clientMapper;
   private final HttpUtils httpUtils;
-  private final CartMapper cartMapper;
 
   @Override
   public void createClient(Client client) {
@@ -39,27 +40,40 @@ public class ClientSrv implements ClientApi {
 
   @Override
   public void updateClient(Client client) {
-
+    clientRepository.findById(client.getIdClient())
+        .orElseThrow(() -> new ClientNotFoundException("Client not found"));
+    clientRepository.save(clientMapper.toClientDao(client));
   }
 
   @Override
   public void deleteClient(UUID id) {
-
+    try {
+      clientRepository.deleteById(id);
+    } catch (PersistenceException e) {
+      throw new PersistException("Client with: " + id + " could not be deleted");
+    }
   }
 
   @Override
-  public Client getClient(UUID id) {
-    return null;
+  public Client getClientById(UUID id) {
+    return clientRepository.findById(id)
+        .map(clientMapper::toClient)
+        .orElseThrow(() -> new ClientNotFoundException("Client with id " + id + " not found"));
   }
 
   @Override
   public Client getClientByEmail(String email) {
-    return null;
+    return clientRepository.findClientByEmail(email)
+        .map(clientMapper::toClient)
+        .orElseThrow(() -> new ClientNotFoundException("Client with email " + email + " not found"));
   }
 
   @Override
   public List<Client> getClients() {
-    return List.of();
+    return clientRepository.findAll()
+        .stream()
+        .map(clientMapper::toClient)
+        .toList();
   }
 
 }

@@ -28,6 +28,7 @@ public class HttpUtils {
 
   private static final HttpClient httpClient = HttpClient.newHttpClient();
   private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+  private static final String APPLICATION_JSON = "application/json";
 
   private final CartMapper cartMapper;
 
@@ -58,16 +59,16 @@ public class HttpUtils {
     final HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(url))
         .PUT(HttpRequest.BodyPublishers.ofString(cartJson, StandardCharsets.UTF_8))
-        .header("Content-Type", "application/json")
-        .header("Accept", "application/json")
+        .header("Content-Type", APPLICATION_JSON)
+        .header("Accept", APPLICATION_JSON)
         .build();
 
     final HttpResponse<String> response = sendProductRequest(request);
 
     if (response.statusCode() == 200) {
-      log.info("Successfully updated cart with id " + idCart);
+      log.info("Successfully updated cart with id {}", idCart);
     } else {
-      throw new CartNotCreatedException("Cart couldn't be created, ERROR: " + response.statusCode());
+      throw new CartNotCreatedException("Cart couldn't be updated, ERROR: " + response.statusCode());
     }
   }
 
@@ -82,8 +83,8 @@ public class HttpUtils {
     final HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(url))
         .POST(HttpRequest.BodyPublishers.ofString(cartJson, StandardCharsets.UTF_8))
-        .header("Content-Type", "application/json")
-        .header("Accept", "application/json")
+        .header("Content-Type", APPLICATION_JSON)
+        .header("Accept", APPLICATION_JSON)
         .build();
 
     final HttpResponse<String> response = sendProductRequest(request);

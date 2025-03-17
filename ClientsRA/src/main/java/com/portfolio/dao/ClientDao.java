@@ -47,7 +47,7 @@ public class ClientDao {
   @Column(name = "address")
   private String address;
 
-  @Column(name = "idCart", unique = true)
+  @Column(name = "idCart", unique = true, updatable = false)
   private UUID idCart;
 
   @Temporal(TemporalType.TIMESTAMP)
