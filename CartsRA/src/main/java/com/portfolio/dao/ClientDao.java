@@ -50,9 +50,6 @@ public class ClientDao {
   @Column(name = "address")
   private String address;
 
-  @OneToOne(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private CartDao cartDao;
-
   @Temporal(TemporalType.TIMESTAMP)
   @CreationTimestamp
   @Column(name = "creationDate", updatable = false)

@@ -33,15 +33,11 @@ public class CartDao {
   @Column(name = "idCart", unique = true)
   private UUID idCart;
 
-  @Column(name = "client")
+  @Column(name = "idClient")
   private UUID idClient;
 
   @OneToMany(mappedBy = "cartDao", cascade = CascadeType.ALL)
   private List<ProductDao> products;
-
-  @OneToOne
-  @JoinColumn(name = "idClient", referencedColumnName = "idClient", unique = true)
-  private ClientDao client;
 
   @Temporal(TemporalType.TIMESTAMP)
   @UpdateTimestamp

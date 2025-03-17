@@ -47,7 +47,7 @@ public class ProductRest {
     return productApi.findProducts();
   }
 
-  @GetMapping("{idProduct}")
+  @GetMapping("/{idProduct}")
   @Operation(summary = "Finds a product specified by id",
              description = "Finds the product with the specified id in the database")
   @ApiResponses(value = {
