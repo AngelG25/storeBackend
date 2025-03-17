@@ -1,7 +1,6 @@
 package com.portfolio.srv;
 
 import com.portfolio.api.ClientApi;
-import com.portfolio.api.models.Cart;
 import com.portfolio.api.models.Client;
 import com.portfolio.dao.ClientDao;
 import com.portfolio.repositories.ClientRepository;
@@ -35,6 +34,7 @@ public class ClientSrv implements ClientApi {
     ClientDao clientDao = clientMapper.toClientDao(client);
     clientDao.setIdCart(idCart);
     clientRepository.save(clientDao);
+    httpUtils.updateCart(idCart, clientDao.getIdClient());
   }
 
   @Override
@@ -62,7 +62,4 @@ public class ClientSrv implements ClientApi {
     return List.of();
   }
 
-  private UUID cartCreation() {
-    return httpUtils.createCart();
-  }
 }
