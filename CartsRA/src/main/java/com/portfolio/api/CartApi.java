@@ -16,6 +16,12 @@ public interface CartApi {
   UUID createCart(Cart cart);
 
   /**
+   * Updates a cart, setting the client id relation
+   * @param cart with the modified fields to update
+   */
+  void updateCart(Cart cart);
+
+  /**
    * Get the cart of a specific client
    * @param clientId id of the client
    * @return the cart associated to the client

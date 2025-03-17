@@ -3,6 +3,7 @@ package com.portfolio.srv;
 import com.portfolio.api.CartApi;
 import com.portfolio.api.exceptions.CartNotFoundException;
 import com.portfolio.api.exceptions.MicroserviceCommunicationException;
+import com.portfolio.api.exceptions.PersistException;
 import com.portfolio.api.exceptions.ProductNotFoundException;
 import com.portfolio.api.models.Cart;
 import com.portfolio.api.models.Product;
@@ -10,6 +11,7 @@ import com.portfolio.dao.CartDao;
 import com.portfolio.repositories.CartRepository;
 import com.portfolio.srv.utils.CartMapper;
 import com.portfolio.srv.utils.HttpUtils;
+import jakarta.persistence.PersistenceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.mapping.MappingException;
@@ -35,6 +37,18 @@ public class CartSrv implements CartApi {
     final CartDao cartDao = cartMapper.toCartDao(cart);
     cartRepository.save(cartDao);
     return cartDao.getIdCart();
+  }
+
+  @Override
+  public void updateCart(Cart cart) {
+    final CartDao updatedCart = cartMapper.toCartDao(cart);
+    try {
+      cartRepository.findById(cart.getIdCart())
+          .map(productDao -> cartRepository.save(updatedCart))
+          .orElseThrow(() -> new CartNotFoundException("Cart with id: " + cart.getIdCart() + "could not be found"));
+    } catch (PersistenceException e) {
+      throw new PersistException("Error while saving the cart: " + e.getMessage());    }
+
   }
 
   @Override
