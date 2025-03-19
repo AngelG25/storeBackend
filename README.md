@@ -1,5 +1,11 @@
 # 🚀 Project: Client, Product, and Shopping Cart Management System (Microservices Architecture)
 
+## ⚠️ Disclaimer
+
+> **Note:** This project is not designed to optimize for maximum efficiency or scalability. The primary goal is to demonstrate a wide range of technologies and architectural patterns to showcase the diversity of my technical knowledge.
+
+---
+
 ## 📌 Project Specifications
 
 ### 🏗 Architecture
