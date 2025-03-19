@@ -1,43 +1,61 @@
-# 🚀 Proyecto: Sistema de Gestión de Clientes, Productos y Carrito de Compras
+# 🚀 Project: Client, Product, and Shopping Cart Management System (Microservices Architecture)
 
-## 📌 Especificaciones del Proyecto
+## 📌 Project Specifications
 
-### 🏗 Arquitectura
-- **Tipo de Aplicación:** Monolítica con Spring Boot.
-- **Módulos:** Clientes, Productos y Carrito de Compras como 3 microservicios independientes desarrollados con REST-API comunicados por HttpClient.
-- **Seguridad:** Implementación con Spring Security y JWT.
-- **Base de Datos:** PostgreSQL dockerizada.
-- **Despliegue:** Docker y Docker Compose.
+### 🏗 Architecture
+- **Application Type:** Distributed system based on microservices.
+- **Microservices:**
+  - **Products Service:** exposed on port `8080`.
+  - **Carts Service:** exposed on port `8081`.
+  - **Clients Service:** exposed on port `8082`.
+- **Communication:** REST-API between services via HttpClient.
+- **Database:** Embedded H2 database for each microservice.
+- **API Documentation:** Integrated Swagger UI in each service.
+- **Testing:** Unit tests implemented across services.
 
-### 🛠 Tecnologías Utilizadas
-- **Lenguaje:** Java 21.
-- **Framework:** Spring Boot 3.x.
-- **Persistencia:** Spring Data JPA con Hibernate.
-- **Autenticación y Autorización:** Spring Security con JWT.
-- **Base de Datos:** PostgreSQL.
-- **Gestión de Dependencias:** Maven.
-- **Contenerización:** Docker & Docker Compose.
+### 🛠 Technologies Used
+- **Language:** Java 21.
+- **Framework:** Spring Boot 3.4.2.
+- **Persistence:** Spring Data JPA with Hibernate.
+- **Dependency Management:** Maven.
+- **Database:** H2 embedded for simplicity.
+- **API Documentation:** Swagger OpenAPI 3.
 
-### 🔥 Requisitos
-- **JDK 17 o superior.**
-- **Maven 3.8+** para gestión de dependencias.
-- **Docker y Docker Compose** para la base de datos PostgreSQL.
-- **Configuración de variables de entorno para la conexión a la BD y JWT.**
+### ⚙️ Functional Overview
+- **Products Service:** Handles the creation and retrieval of available products.
+- **Clients Service:** Allows creating and managing clients; when a client is created, a shopping cart is automatically generated and assigned.
+- **Carts Service:** Adds products to shopping carts by consuming data from the Products Service.
 
-### 🔑 Seguridad
-- Implementación de **JWT (JSON Web Token)** para autenticación segura.
-- Configuración de permisos y roles con **Spring Security**.
+### 🚪 Microservice Ports
+| Microservice         | Port  |
+|----------------------|-------|
+| Products Service     | 8080  |
+| Carts Service        | 8081  |
+| Clients Service      | 8082  |
 
-### 📮 Endpoints Principales
-| Método | Endpoint         | Descripción                      |
-|--------|-----------------|----------------------------------|
-| GET    | /clientes       | Lista todos los clientes        |
-| POST   | /clientes       | Crea un nuevo cliente           |
-| GET    | /productos      | Lista todos los productos       |
-| POST   | /productos      | Crea un nuevo producto          |
-| GET    | /carrito/{id}   | Obtiene un carrito por ID       |
-| POST   | /carrito        | Agrega un producto al carrito   |
+### 🧪 Tests
+- Each microservice contains unit tests to ensure code quality.
 
-### 📜 Licencia
-Este proyecto está bajo la licencia **MIT**.
+### 🔥 Requirements
+- **JDK 21** installed.
+- **Maven 3.8+** for project build.
+- No Docker or PostgreSQL needed as **H2 embedded** is used for each service.
 
+### 📮 Main Endpoints
+| Microservice         | Method | Endpoint                  | Description                                   |
+|----------------------|--------|---------------------------|-----------------------------------------------|
+| **Clients Service**  | GET    | /clientes                 | Lists all clients                             |
+|                      | POST   | /clientes                 | Creates a new client (and its associated cart)|
+| **Products Service** | GET    | /productos                | Lists all products                            |
+|                      | POST   | /productos                | Creates a new product                         |
+| **Carts Service**    | GET    | /carrito/{id}             | Retrieves a cart by ID                        |
+|                      | POST   | /carrito                  | Adds a product to an existing cart            |
+
+### 📚 Swagger UI
+- Access Swagger documentation at:
+  - **Products Service:** `http://localhost:8080/swagger-ui/index.html`
+  - **Carts Service:** `http://localhost:8081/swagger-ui/index.html`
+  - **Clients Service:** `http://localhost:8082/swagger-ui/index.html`
+
+### 📜 License
+This project is licensed under the **MIT** license.
