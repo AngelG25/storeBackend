@@ -44,7 +44,7 @@ public class CartSrv implements CartApi {
     final CartDao updatedCart = cartMapper.toCartDao(cart);
     try {
       cartRepository.findById(cart.getIdCart())
-          .map(productDao -> cartRepository.save(updatedCart))
+          .map(cartDao -> cartRepository.save(updatedCart))
           .orElseThrow(() -> new CartNotFoundException("Cart with id: " + cart.getIdCart() + "could not be found"));
     } catch (PersistenceException e) {
       throw new PersistException("Error while saving the cart: " + e.getMessage());    }
@@ -53,9 +53,7 @@ public class CartSrv implements CartApi {
 
   @Override
   public Cart getCartByClientId(UUID idClient) {
-    return cartRepository.findByIdClient(idClient)
-        .map(cartMapper::toCart)
-        .orElseThrow(() -> new CartNotFoundException(idClient.toString()));
+    return findCartByClientId(idClient);
   }
 
   @Override
