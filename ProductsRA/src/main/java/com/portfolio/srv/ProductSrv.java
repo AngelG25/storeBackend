@@ -11,6 +11,7 @@ import com.portfolio.srv.utils.ProductMapper;
 import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.ApplicationScope;
 
@@ -31,8 +32,9 @@ public class ProductSrv implements ProductApi {
   private static final String ERROR_SAVING = "Error while saving the product: ";
 
   @Override
-  public List<Product> findProducts() {
-    return productRepository.findAll()
+  public List<Product> findProducts(int pageIndex, int pageSize) {
+    PageRequest pageRequest = PageRequest.of(pageIndex, pageSize);
+    return productRepository.findAll(pageRequest)
         .stream()
         .filter(ProductDao::isInStock)
         .map(productMapper::productToDto)

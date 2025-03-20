@@ -15,6 +15,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +49,7 @@ class ProductSrvTest extends ProductCreation {
   static Product product;
   private static ProductDao productDao;
   private static final UUID PRODUCT_UUID = UUID.randomUUID();
+  private static PageRequest pageRequest;
 
   @BeforeEach
   void configTest() {
@@ -55,23 +59,26 @@ class ProductSrvTest extends ProductCreation {
         .build();
     productDao = createProductDao();
     productDao.setIdProduct(PRODUCT_UUID);
+    pageRequest = PageRequest.of(0, 10);
   }
   
   @Test
   void testFindProducts() {
-    when(productRepository.findAll()).thenReturn(List.of(productDao));
+    Page<ProductDao> page = new PageImpl<>(List.of(productDao));
+    when(productRepository.findAll(pageRequest)).thenReturn(page);
     when(productMapper.productToDto(any(ProductDao.class))).thenReturn(product);
-    assertNotNull(productSrv.findProducts());
+    assertNotNull(productSrv.findProducts(0, 10));
     verify(productMapper, times(1)).productToDto(any(ProductDao.class));
-    verify(productRepository, only()).findAll();
+    verify(productRepository, only()).findAll(pageRequest);
   }
 
   @Test
   void testFindProductsNotInStock() {
     productDao.setInStock(false);
-    when(productRepository.findAll()).thenReturn(List.of(productDao));
-    assertEquals(List.of(), productSrv.findProducts());
-    verify(productRepository, only()).findAll();
+    Page<ProductDao> page = new PageImpl<>(List.of(productDao));
+    when(productRepository.findAll(pageRequest)).thenReturn(page);
+    assertEquals(List.of(), productSrv.findProducts(0, 10));
+    verify(productRepository, only()).findAll(pageRequest);
     verifyNoInteractions(productMapper);
   }
 

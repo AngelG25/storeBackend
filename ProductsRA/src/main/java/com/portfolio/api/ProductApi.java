@@ -10,9 +10,11 @@ public interface ProductApi {
   /**
    * Finds all the products in the database that are in stock
    *
+   * @param pageIndex int value of page index
+   * @param pageSize int value of page size
    * @return List of products that are in stock
    */
-  List<Product> findProducts();
+  List<Product> findProducts(int pageIndex, int pageSize);
 
   /**
    * Finds the product with the id indicated if it is in stock
